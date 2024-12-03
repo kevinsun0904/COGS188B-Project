@@ -11,14 +11,14 @@ def filter_restaurants_by_location(file_path, location, output_file):
             raise ValueError("JSON data should be a list of objects.")
         
         # Filter restaurants with the specified location
-        san_diego_restaurants = [
+        filtered_restaurants = [
             restaurant for restaurant in data 
-            if restaurant.get('location') == location
+            if restaurant.get('city') == location
         ]
         
         # Write the filtered results to a new JSON file
         with open(output_file, 'w') as out_file:
-            json.dump(san_diego_restaurants, out_file, indent=4)
+            json.dump(filtered_restaurants, out_file, indent=4)
         
         print(f"Filtered results have been saved to {output_file}")
 
@@ -30,6 +30,6 @@ def filter_restaurants_by_location(file_path, location, output_file):
         print(f"An error occurred: {e}")
 
 input_file = 'restaurants.json'  # Replace with file name
-output_file = 'san_diego_restaurants.json'  # Name of the output file
-location = "San Diego"
+output_file = 'santa_barbara_restaurants.json'  # Name of the output file
+location = "Santa Barbara"
 filter_restaurants_by_location(input_file, location, output_file)
