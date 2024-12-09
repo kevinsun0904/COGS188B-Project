@@ -1,1 +1,3 @@
-COGS118B Project
+# COGS118B Project
+
+[Data linked](https://www.yelp.com/dataset/download)

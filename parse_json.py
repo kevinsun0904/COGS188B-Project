@@ -31,6 +31,6 @@ def fix_invalid_json(input_file, output_file):
         print(f"An error occurred: {e}")
 
 # Example usage
-input_file = 'invalid_restaurants.json'  # Replace with your input file
+input_file = 'yelp_academic_dataset_business.json'  # Replace with your input file
 output_file = 'fixed_restaurants.json'  # Name of the output file
 fix_invalid_json(input_file, output_file)

@@ -29,7 +29,7 @@ def filter_restaurants_by_location(file_path, location, output_file):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-input_file = 'restaurants.json'  # Replace with file name
+input_file = 'fixed_restaurants.json'  # Replace with file name
 output_file = 'santa_barbara_restaurants.json'  # Name of the output file
 location = "Santa Barbara"
 filter_restaurants_by_location(input_file, location, output_file)
