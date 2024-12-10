@@ -2,28 +2,37 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 
-sb = []
+class Restaurant:
+    def __init__(self, lat=0, long=0, rating=0, category="", name=""):
+        self.lat = lat
+        self.long = long
+        self.rating = rating
+        self.category = category
+        self.name = name
+
+restaurants = []
 
 # Read file
 with open('yelp_academic_dataset_business.json') as f:
     for line in f:
         entry = json.loads(line)
         if entry["city"] == "Santa Barbara":
-            sb.append(entry)
+            restaurant = Restaurant(
+                lat=entry["latitude"],
+                long=entry["longitude"],
+                rating=entry["stars"],
+                category=entry["attributes"],
+                name=entry["name"]
+            )
+            restaurants.append(restaurant)
 
-print("Number of businesses in Santa Barbara:", len(sb))
+print("Number of businesses in Santa Barbara:", len(restaurants))
 
-# Extract locations (latitude, longitude)
-locs = [
-    (entry["latitude"], entry["longitude"]) for entry in sb
-]
-
-# Convert to NumPy array
-data = np.array(locs)
-
-# Euclidean distance function
 def euclidean_distance(point1, point2):
     return np.sqrt(np.sum((point1 - point2) ** 2))
+
+# Convert to NumPy array
+locs = np.array([(restaurant.lat, restaurant.long) for restaurant in restaurants])
 
 # K-means clustering function
 def k_means_clustering(data, k, max_iters=100, tol=1e-4):
@@ -50,7 +59,7 @@ def k_means_clustering(data, k, max_iters=100, tol=1e-4):
 
 # Run K-means clustering with 7 clusters
 k = 7
-centroids, labels = k_means_clustering(data, k)
+centroids, labels = k_means_clustering(locs, k)
 
 # Output centroids
 print("Cluster Centroids:")
