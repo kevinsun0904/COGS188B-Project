@@ -2,6 +2,63 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 
+sb = []
+
+# Read file
+with open('yelp_academic_dataset_business.json') as f:
+    for line in f:
+        entry = json.loads(line)
+        if entry["city"] == "Santa Barbara":
+            sb.append(entry)
+
+print("Number of businesses in Santa Barbara:", len(sb))
+
+# Extract locations (latitude, longitude)
+locs = [
+    (entry["latitude"], entry["longitude"]) for entry in sb
+]
+
+# Convert to NumPy array
+data = np.array(locs)
+
+# Euclidean distance function
+def euclidean_distance(point1, point2):
+    return np.sqrt(np.sum((point1 - point2) ** 2))
+
+# K-means clustering function
+def k_means_clustering(data, k, max_iters=100, tol=1e-4):
+    """
+    Custom K-means clustering algorithm.
+    """
+    np.random.seed(42)
+    initial_indices = np.random.choice(len(data), k, replace=False)
+    centroids = data[initial_indices]
+
+    for iteration in range(max_iters):
+        # Assign clusters
+        labels = np.array([np.argmin([euclidean_distance(point, centroid) for centroid in centroids]) for point in data])
+
+        # Recompute centroids
+        new_centroids = np.array([data[np.where(labels == cluster)].mean(axis=0) for cluster in range(k)])
+
+        # Check for convergence
+        if np.all(np.abs(new_centroids - centroids) < tol):
+            break
+        centroids = new_centroids
+
+    return centroids, labels
+
+# Run K-means clustering with 7 clusters
+k = 7
+centroids, labels = k_means_clustering(data, k)
+
+# Output centroids
+print("Cluster Centroids:")
+for i, c in enumerate(centroids):
+    print(f"Cluster {i}: {c}")
+
+
+
 # Defining the plotting helper function
 def plotCurrent(X, Rnk, Kmus):
     N, D = np.shape(X)
